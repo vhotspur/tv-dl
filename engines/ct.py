@@ -110,7 +110,9 @@ class CtEngine:
         if quality:
             video = self.get_video(quality)
         else:
-            video = self.videos[0]
+            # setridime podle kvality: z popisku nechame jenom cislo
+            # kvuli audio-description verzi (label AD) pridame 0, abychom to mohli tridit jako cisla
+            video = sorted(self.videos, key=lambda k: int(re.sub(r"\D", "", k.get('label')+"0")), reverse=True)[0]
             log.info('Automaticky vybraná kvalita: {}'.format(video.get('label')) )
 
         base = self.movie.get('base')
